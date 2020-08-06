@@ -1,21 +1,43 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-
-import logo from './images/logo.png'
+import {Redirect} from 'react-router-dom'
+import logo from '../../asstes/images/logo.png'
 import './login.css'
+import {reqLogin} from '../../api'
+import storageUtils from '../../utils/storageUtils'
+import memoryUtils from '../../utils/memoryUtils'
 
+ 
+ 
+ 
+ 
 
 
 class Login extends Component {
-    
   
-        handleSubmit = (e) => {
-          
+    onFinish=async ({username,password})=>{
+      const result= await reqLogin(username,password)
+
+      if(result.status===0){
+
+        const user= result.data
+        //localStorage.setItem("user_key",JSON.stringify(user))
+        storageUtils.saveUser(user)
+        memoryUtils.user=user
+        this.props.history.replace('/')
+        message.success("登陆成功")
+      }else{
+        message.error(result.msg)
+      }
+    }
+        handleSubmit =  (e) => {
+         
           e.preventDefault()
-          
-          
-  
+       
+     console.log();
+      
+         
         };
         //对密码进行自定义检查
         validatePwd=(rule,value)=>{
@@ -35,6 +57,11 @@ class Login extends Component {
         }
     
     render(){
+     // const user=JSON.parse(localStorage.getItem("user_key")||"{}") 
+     const user=memoryUtils.user
+    if(user._id){
+     return <Redirect to='/'/>
+    }
      
         return (
             <div className="login">
@@ -46,10 +73,15 @@ class Login extends Component {
                 <div className="login-content">
                     <h1>用户登录</h1>
 
-                    <Form className="login-form" 
+                    <Form className="login-form"
+                    ref={(ref)=>{
+                      this.form=ref
+                    }}
                     onSubmitCapture={this.handleSubmit}
-                    form={this.form}>
+                   onFinish={this.onFinish}
+                    >
       <Form.Item
+       
          name="username"
          initialValue=''
          rules={[{ required: true,whitespace:true,message: '用户名是必须的!' },
@@ -57,8 +89,10 @@ class Login extends Component {
               {max:12,message:"用户名不能大于12位"},
               {pattern:/^[a-zA-Z0-9]+$/,message:"用户名必须是英文 数字或下划线组成"},
           ]}
+        
       >
-        <Input prefix={<UserOutlined className="site-form-item-icon" style={{color:'rgba(0,0,0,.25)'}} /> }
+        <Input prefix={<UserOutlined className="site-form-item-icon" style={{color:'rgba(0,0,0,.25)'}} ref='usernames'
+         /> }
         type="user"
          placeholder="Username" />
       </Form.Item>
@@ -75,6 +109,7 @@ class Login extends Component {
           prefix={<LockOutlined className="site-form-item-icon" style={{color:'rgba(0,0,0,.25)'}}/>}
           type="password"
           placeholder="Password"
+         
         />
       </Form.Item>
       <Form.Item>
