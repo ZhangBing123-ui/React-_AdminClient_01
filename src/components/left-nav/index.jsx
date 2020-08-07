@@ -17,8 +17,10 @@ const { SubMenu } = Menu;
 
 
  class LeftNav extends Component {
+   
 
     getMenuNodes2=(menuList)=>{
+
         const path=this.props.location.pathname
         return menuList.reduce((pre,item)=>{
             if(!item.children){
@@ -83,18 +85,16 @@ const { SubMenu } = Menu;
     //         }
     //     })
     // }
+        componentDidMount(){
 
-    state = {
-        collapsed: false,
-      };
+
+        }
+        componentWillMount(){
+             this.menuNodes=this.getMenuNodes2(menuList)
+        }
     
-      toggleCollapsed = () => {
-        this.setState({
-          collapsed: !this.state.collapsed,
-        });
-    }
     render() {
-        const menuNodes=this.getMenuNodes2(menuList)
+       
        const selectKey=this.props.location.pathname
         return (
             <div className="left-nav">
@@ -104,14 +104,14 @@ const { SubMenu } = Menu;
                </Link>
 
     <Menu
-          defaultSelectedKeys={[selectKey]}
+          selectedKeys={[selectKey]}
           defaultOpenKeys={[this.openKey]}
           mode="inline"
           theme="dark"
-          inlineCollapsed={this.state.collapsed}
+       
         >
             {
-              menuNodes
+             this. menuNodes
             }
           {/* <Menu.Item key="/home" 
          
