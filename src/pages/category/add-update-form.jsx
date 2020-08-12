@@ -1,48 +1,52 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import {Form,Input} from 'antd'
 import PropTypes from 'prop-types'
 
-
-import {
-  Form,
-  Input
-} from 'antd'
-
-const Item = Form.Item
-
-/* 
-添加/修改分类的Form组件
-*/
-class AddUpdateForm extends Component {
-
-  static propTypes = {
-    setForm: PropTypes.func.isRequired,
-    categoryName: PropTypes.string,
+           
+  
+   const Item=Form.Item
+class AddUpdateFrom extends Component {
+static propTypes={
+  categoryName:PropTypes.string
+}
+  
+  componentDidMount(){
+    this.props.setForm(this.form)
+    
   }
 
-  componentWillMount () {
-    this.props.setForm(this.props.form)
-  }
+  componentDidUpdate() {
+    this.form.setFieldsValue({
+        categoryName: this.props.categoryName,
+    });
+}
 
-  render() {
-    const { getFieldDecorator } = this.props.form
-    const { categoryName } = this.props
+    render() {
+      const {categoryName}=this.props
     return (
-      <Form>
-        <Item>
-          {
-            getFieldDecorator('categoryName', {
-              initialValue: categoryName || '',
-              rules: [
-                {required: true, message: '分类名称必须输入'}
-              ]
-            })(
-              <Input type="text" placeholder="请输入分类名称"></Input>
-            )
-          }
-        </Item>
+      <Form
+      ref={(ref)=>{
+        this.form=ref
+      }}
+      
+      >
+        <Item
+       
+       name="categoryName"
+       initialValue={categoryName||""}
+       rules={[{ required: true,whitespace:true,message: '用户名是必须的!' },
+           
+        ]}
+      
+    >
+      <Input 
+      type="text"
+       placeholder="请输入分类名称" />
+    </Item>
+
       </Form>
-    )
+    );
   }
 }
 
-export default Form.create()(AddUpdateForm)
+export default AddUpdateFrom;
