@@ -3,13 +3,15 @@ import {Link,withRouter} from 'react-router-dom'
 import './index.css'
 import logo from'../../asstes/images/logo.png'
 import menuList from '../../config/menuConfig'
-import { Menu, Button } from 'antd';
+import { Menu } from 'antd';
+
 import {
  
   MailOutlined,
   HomeFilled
   
 } from '@ant-design/icons';
+import memoryUtils from '../../utils/memoryUtils'
 
 const { SubMenu } = Menu;
 
@@ -17,13 +19,28 @@ const { SubMenu } = Menu;
 
 
  class LeftNav extends Component {
+
+    hasAuth=(item)=>{
+        const user=memoryUtils.user
+        const menus=user.role.menus
+        if(user.username==='admin'||item.public||menus.indexOf(item.key)!==-1){
+            return true
+        }else if(item.children){
+            const cItem=item.children.find(cItem=>menus.indexOf(cItem.key)!==-1)
+            return !!cItem
+        }
+
+
+        return false
+    }
    
 
     getMenuNodes2=(menuList)=>{
 
         const path=this.props.location.pathname
         return menuList.reduce((pre,item)=>{
-            if(!item.children){
+            if(this.hasAuth(item)){
+                 if(!item.children){
                 pre.push(
                     <Menu.Item key={item.key}
          
@@ -36,7 +53,7 @@ const { SubMenu } = Menu;
                 </Menu.Item>
                 )
             }else{
-               const cItem= item.children.find(cItem=>cItem.key===path)
+               const cItem= item.children.find(cItem=>path.indexOf(cItem.key)===0)
                if(cItem){
                    this.openKey=item.key
                }
@@ -52,6 +69,9 @@ const { SubMenu } = Menu;
                 </SubMenu>
                 )
             }
+            }
+
+           
             return pre
         },[])
 
@@ -95,7 +115,10 @@ const { SubMenu } = Menu;
     
     render() {
        
-       const selectKey=this.props.location.pathname
+       let selectKey=this.props.location.pathname
+       if(selectKey.indexOf('/product')===0){
+           selectKey='/product'
+       }
         return (
             <div className="left-nav">
                <Link className='left-nav-link' to='/home'>

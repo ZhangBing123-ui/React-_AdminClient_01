@@ -26,7 +26,7 @@ class Login extends Component {
         //localStorage.setItem("user_key",JSON.stringify(user))
         storageUtils.saveUser(user)
         memoryUtils.user=user
-        this.props.history.replace('/')
+        this.props.history.replace('/home')
         message.success("登陆成功")
       }else{
         message.error(result.msg)

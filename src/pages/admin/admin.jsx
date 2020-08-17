@@ -39,12 +39,12 @@ class Admin extends Component {
                     <Route path='/home' component={Home}/>
                     <Route path='/category' component={Category} />
                     <Route path='/product' component={Product} />
-                    <Route pach='/role' component={Role} />
+                    <Route path='/role' component={Role} />
                     <Route path='/user' component={User} />
                     <Route path='/charts/bar' component={Bar} />
                     <Route path='/charts/line' component={Line} />
                     <Route path='/charts/pie' component={Pie} />
-                    
+                    <Redirect to='/home'/>
                     
                    
                   </Switch>

@@ -9,7 +9,7 @@ import './product.less'
 import ProductHome from './home'
 import ProductAddUpdate from './add-update'
 import ProductDetail from './detail'
-
+import './product.css'
 /**
  * 商品管理
  */

@@ -49,7 +49,7 @@ class Category extends Component {
    this.setState({loading:false})
    if(result.status===0){
      const categorys=result.data
-     console.log(categorys);
+    
      this.setState({
       categorys
       })
@@ -89,9 +89,6 @@ class Category extends Component {
    
   }
 
- 
- 
-
   handleCancel=()=>{
     this.setState({
       showStatus:0
@@ -111,10 +108,13 @@ class Category extends Component {
 
   render() {
     const {categorys,loading,showStatus}=this.state
+    console.log(categorys);
     const category=this.category||{}
-    console.log(category.name);
+  
     const extra=(
-      <Button type='primary' onClick={()=>{this.setState({showStatus:1})}}>
+      <Button type='primary' onClick={()=>{
+        this.category={}
+        this.setState({showStatus:1})}}>
         <PlusOutlined/>
         添加
       </Button>

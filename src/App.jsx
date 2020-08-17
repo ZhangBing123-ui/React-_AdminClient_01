@@ -9,7 +9,7 @@ class App extends Component {
     render() {
         return (
            
-              <HashRouter>
+              <BrowserRouter>
 
                   <Switch>
 
@@ -17,7 +17,7 @@ class App extends Component {
                       <Route path="/" component={Admin}></Route>
                      
                   </Switch>
-              </HashRouter>
+              </BrowserRouter>
           
         );
     }
