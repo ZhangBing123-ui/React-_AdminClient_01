@@ -64,9 +64,9 @@ class ProductHome extends Component {
     },
     {
       title:"操作",
-    
+      width:100,
       render:(product)=>(
-        <span>
+        <span >
           <LinkButton
            onClick={()=>{
              memoryUtils.product=product

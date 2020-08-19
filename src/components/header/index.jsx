@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import memoryUtils from '../../utils/memoryUtils'
 import storageUtils from '../../utils/storageUtils'
-
+import { connect} from 'react-redux'
+import {logout} from '../../redux/actions'
 import {withRouter} from 'react-router-dom'
 import {formateDate} from '../../utils/dateUtils'
 import { Modal } from 'antd';
@@ -24,9 +25,7 @@ import LinkButton from '../link-button'
                 
                 onOk:()=> {
                   console.log('OK');
-                  storageUtils.removeUser()
-                  memoryUtils.user={}
-                    this.props.history.replace('/login')
+                this.props.logout()
                 },
                 onCancel() {
                   console.log('Cancel');
@@ -69,8 +68,8 @@ import LinkButton from '../link-button'
     render() {
 
         const {currentTime,dayPictureUrl,weather}=this.state
-        const user=memoryUtils.user
-        const title=this.getTitle()
+        const user=this.props.user
+        const title=this.props.headerTitle
 
 
         return (
@@ -92,4 +91,10 @@ import LinkButton from '../link-button'
         )
     }
 }
-export default withRouter(Header)
+export default connect(
+    state=>({
+        headerTitle:state.headerTitle,
+        user:state.user
+    }),
+    {logout}
+)(withRouter(Header))

@@ -3,6 +3,10 @@ import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import {Redirect} from 'react-router-dom'
 import logo from '../../asstes/images/logo.png'
+
+import {connect} from 'react-redux'
+import {login} from '../../redux/actions'
+
 import './login.css'
 import {reqLogin} from '../../api'
 import storageUtils from '../../utils/storageUtils'
@@ -18,19 +22,7 @@ import memoryUtils from '../../utils/memoryUtils'
 class Login extends Component {
   
     onFinish=async ({username,password})=>{
-      const result= await reqLogin(username,password)
-      
-      if(result.status===0){
-
-        const user= result.data
-        //localStorage.setItem("user_key",JSON.stringify(user))
-        storageUtils.saveUser(user)
-        memoryUtils.user=user
-        this.props.history.replace('/home')
-        message.success("登陆成功")
-      }else{
-        message.error(result.msg)
-      }
+      this.props.login(username,password)
     }
         handleSubmit =  (e) => {
          
@@ -59,11 +51,11 @@ class Login extends Component {
     
     render(){
      // const user=JSON.parse(localStorage.getItem("user_key")||"{}") 
-     const user=memoryUtils.user
+     const user=this.props.user
     if(user._id){
-     return <Redirect to='/'/>
+     return <Redirect to='/home'/>
     }
-     
+     const errorMsg=user.errorMsg
         return (
             <div className="login">
                 <div className='login-header'>
@@ -72,6 +64,8 @@ class Login extends Component {
                     
                 </div>
                 <div className="login-content">
+
+        {errorMsg? <div style={{color:'red'}}>{errorMsg}</div>:null}
                     <h1>用户登录</h1>
 
                     <Form className="login-form"
@@ -138,4 +132,9 @@ class Login extends Component {
 }
 
 
-export default Login;
+export default connect(
+  state=>({
+    user:state.user
+  }),
+  {login}
+)(Login);

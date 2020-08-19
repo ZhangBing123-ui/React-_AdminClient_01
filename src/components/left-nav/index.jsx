@@ -4,7 +4,8 @@ import './index.css'
 import logo from'../../asstes/images/logo.png'
 import menuList from '../../config/menuConfig'
 import { Menu } from 'antd';
-
+import {connect} from 'react-redux'
+import {setHeaderTitle} from '../../redux/actions'
 import {
  
   MailOutlined,
@@ -21,7 +22,7 @@ const { SubMenu } = Menu;
  class LeftNav extends Component {
 
     hasAuth=(item)=>{
-        const user=memoryUtils.user
+        const user=this.props.user
         const menus=user.role.menus
         if(user.username==='admin'||item.public||menus.indexOf(item.key)!==-1){
             return true
@@ -40,12 +41,19 @@ const { SubMenu } = Menu;
         const path=this.props.location.pathname
         return menuList.reduce((pre,item)=>{
             if(this.hasAuth(item)){
+
+
                  if(!item.children){
+
+
+                    if(item.key===path||path.indexOf(item.key)===0){
+                        this.props.setHeaderTitle(item.title)
+                    }
                 pre.push(
                     <Menu.Item key={item.key}
          
                 icon={<HomeFilled />}>
-                     <Link to={item.key}>
+                     <Link to={item.key} onClick={()=>this.props.setHeaderTitle(item.title)}>
                     <span>{item.title} </span>
                 </Link>
                 
@@ -176,4 +184,9 @@ const { SubMenu } = Menu;
         )
     }
 }
-export default withRouter(LeftNav)
+export default connect(
+    state=>({
+        user:state.user
+    }),
+    {setHeaderTitle}
+)(withRouter(LeftNav))

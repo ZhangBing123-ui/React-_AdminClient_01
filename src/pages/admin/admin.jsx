@@ -4,7 +4,7 @@ import memoryUtils from '../../utils/memoryUtils'
 import { Layout } from 'antd';
 import LeftNav from '../../components/left-nav'
 import Header from '../../components/header'
-
+import {connect} from 'react-redux'
 import Home from '../home/home'
 import Category from '../category/category'
 
@@ -21,7 +21,7 @@ const {  Footer, Sider, Content } = Layout;
 class Admin extends Component {
     render() {
        //const user=JSON.parse(localStorage.getItem("user_key")||"{}") 
-       const user=memoryUtils.user
+       const user=this.props.user
        if(!user._id){
         return <Redirect to='/login'/>
        }
@@ -58,4 +58,10 @@ class Admin extends Component {
     }
 }
 
-export default Admin;
+export default connect(
+  state=>({
+    user:state.user
+  }),{
+
+  }
+)(Admin);
