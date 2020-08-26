@@ -71,7 +71,7 @@ class Category extends Component {
     }else{
       const categoryId=this.category._id
       result=await reqUpdateCategory({categoryId,categoryName})
-      this.form.validateFields()
+      
     }
    
      
@@ -93,7 +93,7 @@ class Category extends Component {
     this.setState({
       showStatus:0
     })
-    this.form.resetFields()
+   
   }
 
   componentWillMount(){
@@ -108,7 +108,7 @@ class Category extends Component {
 
   render() {
     const {categorys,loading,showStatus}=this.state
-    console.log(categorys);
+    
     const category=this.category||{}
   
     const extra=(
@@ -126,7 +126,7 @@ class Category extends Component {
       dataSource={categorys}
       rowKey="_id"
       loading={loading}
-      pagination={{defaultPageSize:4,showQuickJumper:true}}
+      pagination={{defaultPageSize:5,showQuickJumper:true}}
      bordered
      />
 

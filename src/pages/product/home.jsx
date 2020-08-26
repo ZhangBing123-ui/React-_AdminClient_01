@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {NavLink} from 'react-router-dom'
 import {Card,Select,Input,Button,Table, message} from "antd"
 import {PlusSquareFilled } from '@ant-design/icons'
 import LinkButton from '../../components/link-button'
@@ -56,7 +57,7 @@ class ProductHome extends Component {
           }
           return(
           <span>
-            <button onClick={()=>{this.updateStatus(_id,status)}}>{btnText}</button><br/>
+            <Button onClick={()=>{this.updateStatus(_id,status)}}>{btnText}</Button><br/>
             <span >{text}</span>
           </span>
         )

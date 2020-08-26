@@ -6,7 +6,7 @@ import jsonp from 'jsonp';
 import memoryUtils from '../../utils/memoryUtils';
 import { Redirect } from 'react-router-dom';
 import {BASE_IMG} from '../../utils/Constants'
-import {reqCategory} from '../../api'
+import {reqCategory,reqProduct} from '../../api'
 
 const Item=List.Item
 class ProductDetail extends Component {
@@ -17,25 +17,37 @@ class ProductDetail extends Component {
   }
   getCategory= async(categoryId)=>{
     const result=await reqCategory(categoryId)
-    if(result===0){
+    if(result.status===0){
       const categoryName=result.data.name
       this.setState({categoryName})
     }
   }
 
-  componentDidMount(){
-    const product=memoryUtils.product
+  async componentDidMount(){
+    const product=this.state.product
     if(product._id){
         this.getCategory(product.categoryId)
+    }else { // 如果当前product状态没有数据, 根据id参数中请求获取商品并更新
+      const id = this.props.match.params.id
+      const result = await reqProduct(id)
+      if (result.status === 0) {
+        product = result.data
+        this.setState({
+          product
+        })
+        this.getCategory(product.categoryId) // 获取对应的分类
+      }
     }
-    if(this.state.product._id){
-        
-    }
+    
   
   }
   render() {
     const {categoryName}=this.state
     const product=this.state.product
+
+    if(!product||!product._id){
+      return <Redirect to='/product'></Redirect>
+    }
     
     const title=(
       <span>

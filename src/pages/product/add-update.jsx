@@ -48,10 +48,10 @@ class ProductAddUpdate extends Component {
   handleSubmit= async(e)=>{
     e.preventDefault()
   const {name,desc,price,categoryId}=this.form.getFieldValue()
-  console.log(name,desc,price,categoryId);
+ 
   const imgs=this.pwRef.current.getImgs()
     const detail=this.editorRef.current.getDetail()
-    console.log(detail);
+    
     const product={name,desc,price,categoryId,imgs,detail}
     if(this.isUpdate){
       product._id=this.product._id

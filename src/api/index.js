@@ -57,6 +57,11 @@ export const reqUpdateStatus=( productId,status)=>ajax(BASE+'manage/product/upda
    }
 })
 
+export const reqProduct = (productId) => ajax(BASE + '/manage/product/info', {
+    params: { 
+      productId
+    }
+  })
 export const reqDeleteImg=(name)=>ajax.post(BASE+'/manage/img/delete',{name})
 
 export const reqAddUpdateProduct=(product)=>ajax.post(

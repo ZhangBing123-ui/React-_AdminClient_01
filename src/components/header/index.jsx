@@ -4,7 +4,7 @@ import storageUtils from '../../utils/storageUtils'
 
 import {withRouter} from 'react-router-dom'
 import {formateDate} from '../../utils/dateUtils'
-import { Modal } from 'antd';
+import { Modal ,Button} from 'antd';
 import {reqWeather} from '../../api'
 import './index.css'
 import menuList from '../../config/menuConfig'
@@ -80,7 +80,7 @@ import LinkButton from '../link-button'
                     <LinkButton href="#" onClick={this.logout}>退出</LinkButton>
                 </div>
                 <div className="header-botton">
-                    <div className='header-botton-left'>{title}</div>
+                    <div className='header-botton-left'><Button type='primary'>{title}</Button> </div>
                     <div className='header-botton-right'>
                         <span>{currentTime}</span>&nbsp;&nbsp;
                         <img src={dayPictureUrl} alt="weather"/>&nbsp;&nbsp;
